@@ -28,24 +28,46 @@ function Chat({ socket, username, room }) {
 	}, [socket]);
 
 	return (
-		<div>
-			<div className='chat-header'>
+		<div class='chat-window'>
+			<div class='chat-header'>
 				<p>Live Chat</p>
 			</div>
-			<div className='chat-body'>
+			<div class='chat-body'>
 				{messageList.map((messageContent) => {
-					return messageContent.message;
+					return (
+						<div
+							class='message'
+							id={
+								username === messageContent.author
+									? "you"
+									: "other"
+							}
+						>
+							<div>
+								<div class='message-content'>
+									<p>{messageContent.message}</p>
+								</div>
+								<div className='message-meta'>
+									<p id='time'>{messageContent.time}</p>
+									<p id='author'>{messageContent.author}</p>
+								</div>
+							</div>
+						</div>
+					);
 				})}
 			</div>
-			<div className='chat-footer'>
+			<div class='chat-footer'>
 				<input
 					type='text'
 					placeholder='Hello world'
 					onChange={(event) => {
 						setCurrentMessage(event.target.value);
 					}}
+					onKeyPress={(event) => {
+						event.key === "Enter" && sendMessage();
+					}}
 				/>
-				<button onClick={sendMessage}>&#9658; Send</button>
+				<button onClick={sendMessage}>Send</button>
 			</div>
 		</div>
 	);
